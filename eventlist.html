@@ -1,0 +1,11 @@
+<header>
+	<h1>Your Events</h1>
+</header>
+
+<div data-ng-controller="EventList">
+	<ul class="unstyled">
+		<li data-ng-repeat="event in events" class="datarow">
+			<a href="#/{{event.url}}">{{event.name}}</a>
+		</li>
+	</ul>
+</div>
