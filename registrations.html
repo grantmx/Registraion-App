@@ -1,7 +1,9 @@
 <header>
-	<a href="/">Events</a>
-	<h1>Registrations</h1>
-	<a href="/add">Add People</a>
+	<div class="css-table">
+		<div class="col"><a href="#" data-ng-click="back()">Events</a></div>
+		<div class="col center"><h1>Registrations</h1></div>
+		<div class="col last"><a id="add">Add</a></div>
+	</div>
 </header>
 
 <div data-ng-controller="RegList">
@@ -12,9 +14,9 @@
 
 		<fieldset>
 			<ul class="unstyled">
-				<li data-ng-repeat="folk in people | filter:search"  class="datarow">
-					<label class="registrant-name">{{folk.name}}</label>
-					<label class="switch-light switch-ios" onclick="">
+				<li data-ng-repeat="folk in people | filter:search"  class="datarow align-left">
+					<label class="registrant-name align-left">{{folk.name}}</label>
+					<label class="switch-light switch-ios align-right" onclick="">
 						<input type="checkbox" data-ng-model="folk.here" data-ng-checked="folk.here">
 						<span>
 							&nbsp;
@@ -28,7 +30,40 @@
 		</fieldset>
 
 		<fieldset>
-			<button data-ng-click="postRegistrations()">Save &amp; Submit</button>
+			<button type="submit" data-ng-click="postRegistrations()">Save &amp; Submit</button>
 		</fieldset>
 	</form>
-</div>
+
+
+	<div id="addPeople" class="modal hide fade">
+		<div class="modal-body">
+			<header>
+				<div class="css-table">
+					<div class="col"><a href="#" class="close" data-dismiss="modal">Back</a></div>
+					<div class="col center"><h1>Add People</h1></div>
+					<div class="col last">&nbsp;</div>
+				</div>
+			</header>
+
+			<section>
+				<form id="theNewList" data-ng-submit="addToList()">
+					<fieldset class="search">
+						<input type="text" placeholder="Full Name" data-ng-model="newName">
+					</fieldset>
+
+					<fieldset>
+						<button type="submit">Add</button>
+					</fieldset>
+				</form>
+
+				<ul class="unstyled">
+					<li data-ng-repeat="folk in people | filter:{added:true}" class="datarow align-left">
+						<label class="align-left">{{folk.name}}</label>
+						<a data-ng-click="removePerson()" class="align-right delete">x</a>
+					</li>
+				</ul>
+			</section>
+		</div><!-- end modal body-->
+	</div>
+
+</div><!-- end controller -->
