@@ -1,0 +1,22 @@
+<header>
+	<a href="/">Registrations</a>
+	<h1>Add New People</h1>
+</header>
+
+<div data-ng-controller="RegList">
+	<form id="theNewList" data-ng-submit="addToList()">
+		<fieldset class="search">
+			<input type="text" placeholder="Full Name" data-ng-model="newName">
+		</fieldset>
+
+		<fieldset>
+			<button type="submit">Add</button>
+		</fieldset>
+	</form>
+
+	<ul class="unstyled">
+		<li data-ng-repeat="folk in people | filter:added"  class="datarow">
+			{{folk.name}}
+		</li>
+	</ul>
+</div>

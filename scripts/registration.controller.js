@@ -11,6 +11,13 @@
 				templateUrl: "registrations.html",
 				conroller: "RegList"
 			})
+			.when("/add/", {
+				templateUrl: "add-people.html",
+				conroller: "RegList"
+			})
+			.otherwise({
+				redirectTo:'/'
+			});
 	});
 
 
@@ -48,9 +55,19 @@
 
 		defer.resolve($routeParams.eventid);
 
+		//sends list to the server
 		$scope.postRegistrations = function(){
 			$log.info($scope.people);
 		};
+
+		//adds new people to the list
+		$scope.addToList = function(){
+			$scope.people.push({name: $scope.newName, here: false, added: true});
+
+			$scope.newFirstName = "";
+			$scope.newLastName = "";
+		};
+
 	});
 
 
@@ -61,5 +78,8 @@
 			{name: "Conference 2014", url: "registrations/12345"}
 		];
 	});
+
+
+
 
 }(window.angular)
