@@ -1,8 +1,8 @@
 <header>
 	<div class="css-table">
-		<div class="col"><a href="#" data-ng-click="back()">Events</a></div>
+		<div class="col"><a href="/regapp/#/"><span class="icon-chevron-left"></span> Events</a></div>
 		<div class="col center"><h1>Registrations</h1></div>
-		<div class="col last"><a id="add">Add</a></div>
+		<div class="col last"><a id="add"><span class="icon-plus"></span></a></div>
 	</div>
 </header>
 
@@ -29,7 +29,7 @@
 			</ul>
 		</fieldset>
 
-		<fieldset>
+		<fieldset class="static-footer">
 			<button type="submit" data-ng-click="postRegistrations()">Save &amp; Submit</button>
 		</fieldset>
 	</form>
@@ -39,27 +39,27 @@
 		<div class="modal-body">
 			<header>
 				<div class="css-table">
-					<div class="col"><a href="#" class="close" data-dismiss="modal">Back</a></div>
-					<div class="col center"><h1>Add People</h1></div>
+					<div class="col"><a href="#" class="close" data-dismiss="modal"><span class="icon-chevron-left"></span> Back</a></div>
+					<div class="col center"><h1>Add Registration</h1></div>
 					<div class="col last">&nbsp;</div>
 				</div>
 			</header>
 
 			<section>
-				<form id="theNewList" data-ng-submit="addToList()">
+				<form id="theNewList">
 					<fieldset class="search">
-						<input type="text" placeholder="Full Name" data-ng-model="newName">
+						<input type="text" placeholder="Enter Full Name" id="newName" data-ng-model="newName">
 					</fieldset>
 
 					<fieldset>
-						<button type="submit">Add</button>
+						<button type="submit" data-ng-click="addToList()">Add</button>
 					</fieldset>
 				</form>
 
 				<ul class="unstyled">
 					<li data-ng-repeat="folk in people | filter:{added:true}" class="datarow align-left">
 						<label class="align-left">{{folk.name}}</label>
-						<a data-ng-click="removePerson()" class="align-right delete">x</a>
+						<a data-ng-click="removePerson()" class="align-right delete"><span class="icon-close"></span></a>
 					</li>
 				</ul>
 			</section>

@@ -8,26 +8,53 @@ var grantmx = grantmx || {};
 }(window.jQuery, window.grantmx);
 
 
+
 !function (angular){
-	var regApp = angular.module("registrationApp",["ngRoute"]);
+	var regApp = angular.module("registrationApp",["ngRoute", "ngAnimate"]);
 
 
+	/* Route Configs
+	--------------------------------------------------*/
 	regApp.config(function ($routeProvider) {
 		$routeProvider.when("/", {
 				templateUrl: "eventlist.html",
-				controller: "EventList"
+				controller: "EventList",
+				depth: 1
 			})
 			.when("/registrations/:eventid", {
 				templateUrl: "registrations.html",
-				conroller: "RegList"
+				conroller: "RegList",
+				depth: 2
 			})
 			.otherwise({
-				redirectTo:'/'
+				redirectTo:'/',
+				depth: 1
 			});
 	});
 
+	/* Animation on route change
+	--------------------------------------------------*/
+	regApp.run(function ($rootScope, $window) {
+		// publish current transition direction on rootScope
+		$rootScope.direction = 'ltr';
+		// listen change start events
+		$rootScope.$on('$routeChangeStart', function (event, next, current) {
+			$rootScope.direction = 'rtl';
+		//console.log(arguments);
+			if (current && next && (current.depth > next.depth)) {
+				$rootScope.direction = 'ltr';
+			}
+			// back
+			$rootScope.back = function () {
+				$window.history.back();
+			}
+		});
+	});
 
-	regApp.controller("RegList", function ($scope, $log, $route, $routeParams, $q){
+
+	/* Registration list controller - updates the list 
+	--------------------------------------------------*/
+	regApp.controller("RegList", function ($scope, $log, $route, $routeParams, $q, $http){
 		var defer = $q.defer();
 
 		$scope.people = [];
@@ -68,17 +95,22 @@ var grantmx = grantmx || {};
 
 		//add new people to the list
 		$scope.addToList = function(){
-			$scope.people.push({name: $scope.newName, here: false, added: true});
-			$scope.newName = "";
+			if(validateAddition()){
+				$scope.people.push({name: $scope.newName, here: false, added: true});
+				$scope.newName = "";
+			}
 		};
+
 
 		//remove recently added people from the list
 		$scope.removePerson = function(){
-			var i, person, yesDelete, thisPerson = this.folk.name;
+			var i, person, yesDelete, 
+				people = $scope.people,
+				thisPerson = this.folk.name;
 
-			for (i = $scope.people.length - 1; i >= 0; i -= 1) {
-				if($scope.people[i].name === thisPerson){
-					person = $scope.people.indexOf($scope.people[i]);
+			for (i = people.length - 1; i >= 0; i -= 1) {
+				if(people[i].name === thisPerson){
+					person = people.indexOf(people[i]);
 				}
 			}
 			
@@ -88,6 +120,13 @@ var grantmx = grantmx || {};
 		};
 
 
+		//validates the form for new additions
+		function validateAddition(){
+			var el = $("#newName");
+			return (el.val() !== "") ? true : alert("Please Enter A Name!");
+		}
+
+		//open the modal to add new people
 		$(document).on("click", "#add", function(e){
 			$('#addPeople').modal({
 				show: true,
@@ -100,11 +139,13 @@ var grantmx = grantmx || {};
 	});
 
 
-
-	regApp.controller("EventList", function ($scope, $route){
+	/* Event listings controller 
+	--------------------------------------------------*/
+	regApp.controller("EventList", function ($scope, $route, $http){
 		$scope.events = [
-			{name: "XYZ Conference 2014", url: "registrations/678"},
-			{name: "Conference 2014", url: "registrations/12345"}
+			{name: "XYZ Conference 2014", url: "#/registrations/678"},
+			{name: "Conference 2014", url: "#/registrations/12345"}
 		];
 	});
+	
 }(window.angular);

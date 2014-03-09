@@ -1,15 +1,15 @@
 <header>
 	<div class="css-table">
 		<div class="col"></div>
-		<div class="col center"><h1>Your Events</h1></div>
+		<div class="col center"><h1>Choose An Event</h1></div>
 		<div class="col"></div>
 	</div>
 </header>
 
-<div data-ng-controller="EventList">
+<div data-ng-controller="EventList" id="events">
 	<ul class="unstyled">
 		<li data-ng-repeat="event in events" class="datarow">
-			<a href="#/{{event.url}}">{{event.name}}</a>
+			<a href="{{event.url}}" class="event-listing">{{event.name}} <span class="icon-chevron-right align-right"></span></a>
 		</li>
 	</ul>
 </div>
